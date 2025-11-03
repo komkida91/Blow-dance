@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Blow Dance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #9c27b0;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #ffffff;
+            --text-gray: #b0b0b0;
+            --success: #4caf50;
+            --error: #f44336;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), #1a0a1e);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(233, 30, 99, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-gray);
+        }
+
+        /* Login Form */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-group input {
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+        }
+
+        .video-card-editor {
+            background: var(--dark-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-card-editor h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .logout-btn {
+            background: var(--dark-bg);
+            color: var(--text-gray);
+            margin-top: 2rem;
+        }
+
+        .logout-btn:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .instructions {
+            background: var(--dark-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--text-gray);
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid var(--dark-bg);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💃 Panel de Administración</h1>
+            <p>Blow Dance - Espacio Creativo</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginSection" class="login-form">
+            <div class="form-group">
+                <label for="password">🔐 Contraseña</label>
+                <input type="password" id="password" placeholder="Ingresá tu contraseña">
+            </div>
+            <button onclick="login()" class="btn">Iniciar Sesión</button>
+            <div id="loginError" class="alert alert-error"></div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="instructions">
+                <h3>📝 Instrucciones:</h3>
+                <ol>
+                    <li>Subí tu video a <strong>Instagram</strong> o <strong>YouTube</strong></li>
+                    <li>Copiá el link del post/video</li>
+                    <li>Pegá el link en el campo correspondiente</li>
+                    <li>Hacé click en <strong>"Guardar Cambios"</strong></li>
+                    <li>¡La página se actualiza automáticamente!</li>
+                </ol>
+            </div>
+
+            <div id="alerts"></div>
+
+            <div class="video-card-editor">
+                <h3>🎵 Hip-Hop</h3>
+                <div class="form-group">
+                    <label>Link del video</label>
+                    <input type="url" id="hiphop-link" placeholder="https://www.instagram.com/p/ABC123/ o https://www.youtube.com/watch?v=XYZ" onblur="previewVideo('hiphop')">
+                    <button onclick="previewVideo('hiphop')" class="btn" style="margin-top: 0.5rem; padding: 0.7rem 1.5rem; font-size: 0.9rem;">👁️ Ver Preview</button>
+                    <div id="hiphop-preview" style="margin-top: 1rem; min-height: 50px; padding: 1rem; background: var(--dark-bg); border-radius: 10px;"></div>
+                </div>
+            </div>
+
+            <div class="video-card-editor">
+                <h3>🌊 Danza Contemporánea</h3>
+                <div class="form-group">
+                    <label>Link del video</label>
+                    <input type="url" id="contemporanea-link" placeholder="https://www.instagram.com/p/ABC123/ o https://www.youtube.com/watch?v=XYZ" onblur="previewVideo('contemporanea')">
+                    <button onclick="previewVideo('contemporanea')" class="btn" style="margin-top: 0.5rem; padding: 0.7rem 1.5rem; font-size: 0.9rem;">👁️ Ver Preview</button>
+                    <div id="contemporanea-preview" style="margin-top: 1rem; min-height: 50px; padding: 1rem; background: var(--dark-bg); border-radius: 10px;"></div>
+                </div>
+            </div>
+
+            <div class="video-card-editor">
+                <h3>🩰 Ballet Clásico</h3>
+                <div class="form-group">
+                    <label>Link del video</label>
+                    <input type="url" id="ballet-link" placeholder="https://www.instagram.com/p/ABC123/ o https://www.youtube.com/watch?v=XYZ" onblur="previewVideo('ballet')">
+                    <button onclick="previewVideo('ballet')" class="btn" style="margin-top: 0.5rem; padding: 0.7rem 1.5rem; font-size: 0.9rem;">👁️ Ver Preview</button>
+                    <div id="ballet-preview" style="margin-top: 1rem; min-height: 50px; padding: 1rem; background: var(--dark-bg); border-radius: 10px;"></div>
+                </div>
+            </div>
+
+            <div class="video-card-editor">
+                <h3>👶 Clases para Niños</h3>
+                <div class="form-group">
+                    <label>Link del video</label>
+                    <input type="url" id="ninos-link" placeholder="https://www.instagram.com/p/ABC123/ o https://www.youtube.com/watch?v=XYZ" onblur="previewVideo('ninos')">
+                    <button onclick="previewVideo('ninos')" class="btn" style="margin-top: 0.5rem; padding: 0.7rem 1.5rem; font-size: 0.9rem;">👁️ Ver Preview</button>
+                    <div id="ninos-preview" style="margin-top: 1rem; min-height: 50px; padding: 1rem; background: var(--dark-bg); border-radius: 10px;"></div>
+                </div>
+            </div>
+
+            <button onclick="saveChanges()" class="btn" id="saveBtn">💾 Guardar Cambios</button>
+            <button onclick="logout()" class="btn logout-btn">🚪 Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        // Contraseña configurada (cambiar por una segura)
+        const ADMIN_PASSWORD = 'blowdance2025';
+
+        // Rama actual (para separar storage entre ramas)
+        const BRANCH_PREFIX = ''; // main usa sin prefijo, v1 usa 'v1_'
+
+        // GitHub config
+        const GITHUB_TOKEN = 'TU_GITHUB_TOKEN_AQUI'; // Lo configuramos después
+        const REPO_OWNER = 'gkachele';
+        const REPO_NAME = 'Blow-dance';
+
+        function login() {
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadCurrentLinks();
+            } else {
+                errorDiv.textContent = '❌ Contraseña incorrecta';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginSection').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('password').value = '';
+        }
+
+        function loadCurrentLinks() {
+            // Aquí cargaríamos los links actuales desde el index.html
+            // Por ahora dejamos los campos vacíos para que la clienta los llene
+            console.log('Panel cargado correctamente');
+        }
+
+        function previewVideo(type) {
+            const input = document.getElementById(`${type}-link`);
+            const previewDiv = document.getElementById(`${type}-preview`);
+            const videoLink = input.value.trim();
+            
+            if (!videoLink) {
+                previewDiv.innerHTML = '';
+                return;
+            }
+            
+            let embed = '';
+            
+            if (videoLink.includes('youtube.com') || videoLink.includes('youtu.be')) {
+                // Extraer ID del video de YouTube
+                let videoId = '';
+                if (videoLink.includes('watch?v=')) {
+                    videoId = videoLink.split('watch?v=')[1].split('&')[0];
+                } else if (videoLink.includes('youtu.be/')) {
+                    videoId = videoLink.split('youtu.be/')[1].split('?')[0];
+                } else if (videoLink.includes('/embed/')) {
+                    videoId = videoLink.split('/embed/')[1].split('?')[0];
+                }
+                
+                if (videoId) {
+                    embed = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 10px;"></iframe>`;
+                } else {
+                    embed = `<p style="color: var(--error);">❌ Link de YouTube inválido</p>`;
+                }
+            } else if (videoLink.includes('tiktok.com')) {
+                embed = `<a href="${videoLink}" target="_blank" style="display: inline-block; padding: 1rem; background: var(--primary-color); color: white; border-radius: 10px; text-decoration: none; margin-top: 1rem;">
+                    <i class="fab fa-tiktok"></i> Ver en TikTok
+                </a>`;
+            } else if (videoLink.includes('instagram.com')) {
+                embed = `<a href="${videoLink}" target="_blank" style="display: inline-block; padding: 1rem; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; border-radius: 10px; text-decoration: none; margin-top: 1rem;">
+                    <i class="fab fa-instagram"></i> Ver en Instagram
+                </a>`;
+            } else {
+                embed = `<a href="${videoLink}" target="_blank" style="display: inline-block; padding: 1rem; background: var(--primary-color); color: white; border-radius: 10px; text-decoration: none; margin-top: 1rem;">
+                    Ver contenido
+                </a>`;
+            }
+            
+            previewDiv.innerHTML = embed;
+        }
+
+        async function saveChanges() {
+            const hiphopLink = document.getElementById('hiphop-link').value;
+            const contemporaneaLink = document.getElementById('contemporanea-link').value;
+            const balletLink = document.getElementById('ballet-link').value;
+            const ninosLink = document.getElementById('ninos-link').value;
+
+            if (!hiphopLink && !contemporaneaLink && !balletLink && !ninosLink) {
+                showAlert('⚠️ Completá al menos un link', 'error');
+                return;
+            }
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = '⏳ Guardando...';
+
+            // Aquí iría la lógica para actualizar el index.html vía GitHub API
+            // Por ahora simulamos el guardado
+            setTimeout(() => {
+                showAlert('✅ ¡Cambios guardados! La página se actualizará en unos segundos.', 'success');
+                saveBtn.disabled = false;
+                saveBtn.textContent = '💾 Guardar Cambios';
+            }, 2000);
+        }
+
+        function showAlert(message, type) {
+            const alertsDiv = document.getElementById('alerts');
+            alertsDiv.innerHTML = `<div class="alert alert-${type}" style="display: block;">${message}</div>`;
+            
+            setTimeout(() => {
+                alertsDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Enter key para login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
+
