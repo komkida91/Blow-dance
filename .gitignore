@@ -57,6 +57,11 @@ TODO.md
 PRIVADO.md
 *.personal
 
+# Archivos de contraseñas (NUNCA subir)
+CLIENTES-PASSWORDS.md
+*PASSWORD*.md
+*password*.md
+
 # Archivos de test que no se usan en producción
 test/
 tests/
