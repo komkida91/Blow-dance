@@ -35,7 +35,7 @@
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagecounter.io; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://api.pagecounter.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagecounter.io; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://api.pagecounter.io; frame-src 'self' https://www.google.com https://maps.googleapis.com https://www.openstreetmap.org; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
     
     <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -748,12 +748,9 @@
                     <p>Guardá nuestra página</p>
                 </div>
             </div>
-            <a href="https://www.google.com/maps/search/?api=1&query=Erasmie+478,+Oberá,+Misiones+3360" target="_blank" rel="noopener noreferrer" class="map-container" title="Ver en Google Maps">
-                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Erasmie+478,Oberá,Misiones+3360,Argentina&zoom=15&size=600x250&markers=color:0xe91e63|Erasmie+478,Oberá,Misiones+3360,Argentina&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8" alt="Ubicación de Blow Dance - Erasmie 478, Oberá, Misiones" loading="lazy" onerror="this.src='https://via.placeholder.com/600x250/1e1e1e/e91e63?text=Ver+Ubicación+en+Google+Maps'; this.onerror=null;">
-                <div class="map-overlay">
-                    <div class="map-overlay-text">📍 Click para ver en Google Maps</div>
-                </div>
-            </a>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3539.7777777777777!2d-55.1234567!3d-27.4863889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDI5JzExLjAiUyA1NcKwMDcjMjQuNCJX!5e0!3m2!1ses!2sar!4v1234567890" frameborder="0" style="border:0; width:100%; height:100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Blow Dance - Erasmie 478, Oberá, Misiones"></iframe>
+            </div>
         </div>
     </section>
 
